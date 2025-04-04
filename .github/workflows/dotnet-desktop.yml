@@ -1,0 +1,52 @@
+name: .NET CI Workflow
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Step 2: Set up .NET
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '6.0.x' # Specify the version of .NET you are using
+
+    # Step 3: Restore dependencies
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # Step 4: Build the project
+    - name: Build the project
+      run: dotnet build --no-restore --configuration Release
+
+    # Step 5: Run tests (if you have test cases)
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal
+
+    # Step 6: Validate the executable runs (optional, for specific functions)
+    - name: Run ASCII Art Demo
+      run: |
+        echo "Executing ASCII Art demo..."
+        dotnet run --project <Path_to_Your_AsciiArt_Project>
+
+    - name: Run Chatbot Demo
+      run: |
+        echo "Executing Chatbot demo..."
+        dotnet run --project <Path_to_Your_Chatbot_Project>
+
+    - name: Run AudioPlayer Demo
+      run: |
+        echo "Executing AudioPlayer demo..."
+        dotnet run --project <Path_to_Your_AudioPlayer_Project>
